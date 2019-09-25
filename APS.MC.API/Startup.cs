@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using APS.MC.Infra.CommonContext.DataContext;
+using APS.MC.Infra.CommonContext.Services;
 using APS.MC.Shared.APSShared;
+using APS.MC.Shared.APSShared.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +39,9 @@ namespace APS.MC.API
 			Settings.DatabaseName = $"{Configuration["databaseName"]}";
 
 			Settings.DetailedLog = bool.Parse($"{Configuration["detailedLog"]}");
+
+			services.AddScoped<APSDataContext, APSDataContext>();
+			services.AddTransient<ILoggingService, LoggingService>();
 
 			services.AddMvc().AddJsonOptions(options =>
 			{
