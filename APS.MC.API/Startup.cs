@@ -1,34 +1,90 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
+using APS.MC.Shared.APSShared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using NLog;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace APS.MC.API
 {
-    public class Startup
-    {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
-        }
+	public class Startup
+	{
+		private readonly IHostingEnvironment _hostingEnvironment;
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+		public static IConfiguration Configuration { get; set; }
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
-        }
-    }
+		public Startup(IHostingEnvironment hostingEnvironment)
+		{
+			LogManager.LoadConfiguration(System.String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+			_hostingEnvironment = hostingEnvironment;
+		}
+
+		public void ConfigureServices(IServiceCollection services)
+		{
+			Configuration = new ConfigurationBuilder()
+				.SetBasePath(Directory.GetCurrentDirectory())
+				.AddJsonFile(_hostingEnvironment.IsProduction() ? "appsettings.json" : $"appsettings.{_hostingEnvironment.EnvironmentName}.json", false, false)
+				.Build();
+
+			Settings.ConnectionString = $"{Configuration["connectionString"]}";
+			Settings.DatabaseName = $"{Configuration["databaseName"]}";
+
+			Settings.DetailedLog = bool.Parse($"{Configuration["detailedLog"]}");
+
+			services.AddMvc().AddJsonOptions(options =>
+			{
+				options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+			});
+
+			services.AddResponseCompression();
+
+			services.AddDistributedMemoryCache();
+
+			services.AddSwaggerGen(options =>
+			{
+				options.SwaggerDoc("v1", new Info
+				{
+					Version = "v1",
+					Title = "APS API",
+					Description = "APS Project",
+					TermsOfService = "None"
+				});
+
+				options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+			});
+		}
+
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			if (env.IsDevelopment())
+				app.UseDeveloperExceptionPage();
+
+			app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+			app.UseMvc();
+
+			app.UseResponseCompression();
+
+			app.UseSwagger();
+
+			app.UseSwaggerUI(options =>
+			{
+				options.DocumentTitle = "APS";
+
+				options.SwaggerEndpoint("/swagger/v1/swagger.json", "APS - V1");
+				options.RoutePrefix = string.Empty;
+
+				options.InjectStylesheet(Path.Combine(AppContext.BaseDirectory, "swagger.css"));
+
+				options.DefaultModelsExpandDepth(-1);
+				options.DocExpansion(DocExpansion.None);
+			});
+		}
+	}
 }
