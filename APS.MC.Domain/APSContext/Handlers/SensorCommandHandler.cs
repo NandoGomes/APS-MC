@@ -79,6 +79,17 @@ namespace APS.MC.Domain.APSContext.Handlers
 						pinPort = new PinPort(command.PinPort);
 
 					sensor.Update(command.Description, pinPort, command.Type);
+
+					if (sensor.Valid)
+					{
+						_sensorRepository.Update(sensor);
+
+						if (_sensorRepository.Valid)
+							result = new CommandResult(HttpStatusCode.OK);
+					}
+
+					else
+						result = new CommandResult(HttpStatusCode.BadRequest, sensor.Notifications);
 				}
 
 				else

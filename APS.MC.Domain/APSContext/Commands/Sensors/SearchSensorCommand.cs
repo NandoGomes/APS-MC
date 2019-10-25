@@ -6,6 +6,6 @@ namespace APS.MC.Domain.APSContext.Commands.Sensors
 	{
 		public string Term { get; private set; }
 
-		private void SetTerm(string term) => Term = term;
+		public void SetTerm(string term) => Term = term;
 	}
 }

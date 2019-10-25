@@ -6,6 +6,6 @@ namespace APS.MC.Domain.APSContext.Commands.Sensors
 	{
 		public string SensorId { get; private set; }
 
-		private void SetSensorId(string sensorId) => SensorId = sensorId;
+		public void SetSensorId(string sensorId) => SensorId = sensorId;
 	}
 }

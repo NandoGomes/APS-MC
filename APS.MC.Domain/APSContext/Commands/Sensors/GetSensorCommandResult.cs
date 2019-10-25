@@ -15,6 +15,6 @@ namespace APS.MC.Domain.APSContext.Commands.Sensors
 
 		public string Description { get; set; }
 		public PinPort PinPort { get; set; }
-		public ESensorType Type { get; set; }
+		public ESensorType? Type { get; set; }
 	}
 }

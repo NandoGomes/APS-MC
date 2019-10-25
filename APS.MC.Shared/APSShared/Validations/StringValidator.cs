@@ -39,7 +39,7 @@ namespace APS.MC.Shared.APSShared.Validations
 
 		public Validator Matchs(string value, string pattern, string property, ENotifications notifications)
 		{
-			if (!Regex.IsMatch(value, pattern))
+			if (!Regex.IsMatch(value ?? string.Empty, pattern ?? string.Empty))
 				AddNotification(property, notifications);
 
 			return this;

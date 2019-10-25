@@ -1,8 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using APS.MC.Domain.APSContext.Handlers;
+using APS.MC.Domain.APSContext.Repositories;
+using APS.MC.Domain.APSContext.Services.ArduinoCommunication;
 using APS.MC.Infra.CommonContext.DataContext;
+using APS.MC.Infra.CommonContext.Repositories;
 using APS.MC.Infra.CommonContext.Services;
+using APS.MC.Infra.CommonContext.Services.ArduinoCommunicationService;
 using APS.MC.Shared.APSShared;
 using APS.MC.Shared.APSShared.Services;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +48,12 @@ namespace APS.MC.API
 			Settings.DetailedLog = bool.Parse($"{Configuration["detailedLog"]}");
 
 			services.AddScoped<APSDataContext, APSDataContext>();
+			services.AddTransient<IArduinoCommunicationService, ArduinoCommunicationService>();
+
+			services.AddTransient<SensorCommandHandler, SensorCommandHandler>();
+
+			services.AddTransient<ISensorRepository, SensorRepository>();
+
 			services.AddTransient<ILoggingService, LoggingService>();
 
 			services.AddMvc().AddJsonOptions(options =>

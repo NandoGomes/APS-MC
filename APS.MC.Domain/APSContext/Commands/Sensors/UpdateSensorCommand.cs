@@ -7,7 +7,7 @@ namespace APS.MC.Domain.APSContext.Commands.Sensors
 	{
 		public string Description { get; set; }
 		public string PinPort { get; set; }
-		public ESensorType Type { get; set; }
+		public ESensorType? Type { get; set; }
 
 		public string SensorId { get; private set; }
 

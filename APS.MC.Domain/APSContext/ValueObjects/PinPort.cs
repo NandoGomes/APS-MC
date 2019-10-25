@@ -19,9 +19,9 @@ namespace APS.MC.Domain.APSContext.ValueObjects
 		{
 			Validator validator = new Validator();
 
-			validator.NotNullOrEmpty(Value, nameof(Value), ENotifications.Null)
-					.MaxLength(Value, 2, nameof(Value), ENotifications.TooLong)
-					.Matchs(Value, @"[a-z][\d]{1,2}$", nameof(Value), ENotifications.InvalidFormat);
+			validator.NotNullOrEmpty(Value, $"{GetThisName()}.{nameof(Value)}", ENotifications.Null)
+					.MaxLength(Value, 2, $"{GetThisName()}.{nameof(Value)}", ENotifications.TooLong)
+					.Matchs(Value, @"^A?[\d]{1,2}$", $"{GetThisName()}.{nameof(Value)}", ENotifications.InvalidFormat);
 
 			AddNotifications(validator);
 		}

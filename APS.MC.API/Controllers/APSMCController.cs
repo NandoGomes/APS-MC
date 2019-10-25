@@ -6,12 +6,12 @@ using APS.MC.Shared.APSShared.Services;
 
 namespace APS.MC.API.Controllers
 {
-	public abstract class Controller : Microsoft.AspNetCore.Mvc.Controller
+	public abstract class APSMCController : Microsoft.AspNetCore.Mvc.Controller
 	{
 		private readonly dynamic _handler;
 		private readonly ILoggingService _loggingService;
 
-		public Controller(dynamic handler, ILoggingService loggingService)
+		public APSMCController(dynamic handler, ILoggingService loggingService)
 		{
 			_handler = handler;
 			_loggingService = loggingService;

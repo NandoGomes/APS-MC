@@ -11,6 +11,6 @@ namespace APS.MC.Shared.APSShared.Commands.Defaults
 		public CreateEntityCommandResult(HttpStatusCode code) : base(code) { }
 		public CreateEntityCommandResult(HttpStatusCode code, IEnumerable<Notification> notifications) : base(code, notifications) { }
 
-		public ObjectId Id { get; set; }
+		public ObjectId? Id { get; set; }
 	}
 }
