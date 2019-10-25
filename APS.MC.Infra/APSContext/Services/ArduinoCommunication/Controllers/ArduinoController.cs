@@ -9,7 +9,7 @@ using System.Web;
 using APS.MC.Shared.APSShared.Notifications;
 using Newtonsoft.Json;
 
-namespace APS.MC.Infra.CommonContext.Services.ArduinoCommunicationService.Controllers
+namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controllers
 {
 	public abstract class ArduinoController : Notifiable
 	{

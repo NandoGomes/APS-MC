@@ -2,13 +2,13 @@ using System;
 using System.Net.Http;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Controllers;
-using APS.MC.Infra.CommonContext.Services.ArduinoCommunicationService.Controllers;
+using APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controllers;
 using APS.MC.Shared.APSShared;
 using APS.MC.Shared.APSShared.Enums;
 using APS.MC.Shared.APSShared.Notifications;
 using APS.MC.Shared.APSShared.Services;
 
-namespace APS.MC.Infra.CommonContext.Services.ArduinoCommunicationService
+namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService
 {
 	public class ArduinoCommunicationService : Notifiable, IArduinoCommunicationService
 	{

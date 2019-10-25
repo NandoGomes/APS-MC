@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using APS.MC.Infra.CommonContext.DataContext;
+using APS.MC.Infra.APSContext.DataContext;
 using APS.MC.Shared.APSShared.Entities;
 using APS.MC.Shared.APSShared.Enums;
 using APS.MC.Shared.APSShared.Repositories;
 using APS.MC.Shared.APSShared.Services;
 using APS.MC.Shared.APSShared.Notifications;
 
-namespace APS.MC.Infra.CommonContext.Repositories
+namespace APS.MC.Infra.APSContext.Repositories
 {
 	public class Repository<T> : Notifiable, IRepository<T> where T : Entity
 	{

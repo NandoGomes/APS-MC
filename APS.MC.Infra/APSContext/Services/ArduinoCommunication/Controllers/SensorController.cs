@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Controllers;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Queries.Sensors;
 
-namespace APS.MC.Infra.CommonContext.Services.ArduinoCommunicationService.Controllers
+namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controllers
 {
 	public class SensorController : ArduinoController, ISensorController
 	{

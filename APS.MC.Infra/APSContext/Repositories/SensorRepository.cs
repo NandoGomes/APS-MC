@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using APS.MC.Domain.APSContext.Entities;
 using APS.MC.Domain.APSContext.Repositories;
-using APS.MC.Infra.CommonContext.DataContext;
+using APS.MC.Infra.APSContext.DataContext;
 using APS.MC.Shared.APSShared.Enums;
 using APS.MC.Shared.APSShared.Services;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace APS.MC.Infra.CommonContext.Repositories
+namespace APS.MC.Infra.APSContext.Repositories
 {
 	public class SensorRepository : Repository<Sensor>, ISensorRepository
 	{

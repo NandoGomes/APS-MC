@@ -6,7 +6,7 @@ using APS.MC.Shared.APSShared;
 using APS.MC.Shared.APSShared.Enums;
 using APS.MC.Shared.APSShared.Services;
 
-namespace APS.MC.Infra.CommonContext.Services
+namespace APS.MC.Infra.APSContext.Services
 {
 	public class LoggingService : ILoggingService
 	{
