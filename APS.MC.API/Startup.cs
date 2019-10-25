@@ -38,8 +38,7 @@ namespace APS.MC.API
 			Settings.ConnectionString = $"{Configuration["connectionString"]}";
 			Settings.DatabaseName = $"{Configuration["databaseName"]}";
 
-			Settings.SerialPortName = $"{Configuration["serialPortName"]}";
-			Settings.SerialPortRate = int.Parse(Configuration["serialPortRate"]);
+			Settings.ArduinoAddress = $"{Configuration["arduinoAddress"]}";
 
 			Settings.DetailedLog = bool.Parse($"{Configuration["detailedLog"]}");
 

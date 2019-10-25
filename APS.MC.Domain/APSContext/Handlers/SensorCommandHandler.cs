@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using APS.MC.Domain.APSContext.Commands.Sensors;
 using APS.MC.Domain.APSContext.Entities;
 using APS.MC.Domain.APSContext.Repositories;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication;
+using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Queries.Sensors;
 using APS.MC.Domain.APSContext.ValueObjects;
 using APS.MC.Shared.APSShared.Commands;
 using APS.MC.Shared.APSShared.Commands.Defaults;
@@ -21,7 +23,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 										ICommandHandler<GetSensorCommand, GetSensorCommandResult>,
 										ICommandHandler<SearchSensorCommand, SearchSensorCommandResult>,
 										ICommandHandler<DeleteSensorCommand, CommandResult>,
-										ICommandHandler<ReadSensorCommand, ReadSensorCommandResult>
+										ICommandHandler<ReadSensorCommand, Task<ReadSensorCommandResult>>
 	{
 		private readonly ISensorRepository _sensorRepository;
 		private readonly IArduinoCommunicationService _arduinoCommunicationService;
@@ -162,7 +164,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 			return result;
 		}
 
-		public ReadSensorCommandResult Handle(ReadSensorCommand command)
+		public async Task<ReadSensorCommandResult> Handle(ReadSensorCommand command)
 		{
 			ReadSensorCommandResult result = new ReadSensorCommandResult();
 
@@ -179,7 +181,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 
 				if (Valid)
 				{
-					string value = _arduinoCommunicationService.Sensors.GetValue(sensor.PinPort, sensor.Type);
+					string value = await _arduinoCommunicationService.Sensors.GetValue(new GetSensorValueQuery(sensor.PinPort, sensor.Type));
 
 					if (_arduinoCommunicationService.Sensors.Valid)
 						result = new ReadSensorCommandResult(HttpStatusCode.OK, value);
