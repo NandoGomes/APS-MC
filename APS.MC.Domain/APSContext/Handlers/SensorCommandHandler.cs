@@ -115,7 +115,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 				Sensor sensor = _sensorRepository.Get(sensorId);
 
 				if (sensor != null)
-					result = new GetSensorCommandResult(HttpStatusCode.OK).Build<Sensor, GetSensorCommandResult>(sensor);
+					result = new GetSensorCommandResult(HttpStatusCode.OK).Build<Sensor, GetSensorCommandResult>(sensor, command.Fields);
 
 				else if (_sensorRepository.Valid)
 					result = new GetSensorCommandResult(HttpStatusCode.NoContent);

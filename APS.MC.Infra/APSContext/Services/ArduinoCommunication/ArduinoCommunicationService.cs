@@ -20,6 +20,7 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService
 				client.BaseAddress = new Uri(Settings.ArduinoAddress);
 
 				Sensors = new SensorController(client);
+				Lights = new LightController(client);
 			}
 			catch (Exception e)
 			{
@@ -28,5 +29,6 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService
 		}
 
 		public ISensorController Sensors { get; private set; }
+		public ILightController Lights { get; private set; }
 	}
 }

@@ -9,6 +9,10 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controlle
 	{
 		public SensorController(HttpClient client) : base(client) { }
 
-		public Task<string> GetValue(GetSensorValueQuery query) => Send<string>(HttpMethod.Get, "", query);
+		public Task<string> GetValue(GetSensorValueQuery query)
+		{
+			return Task.Factory.StartNew(() => "66.69");
+			// return Send<string>(HttpMethod.Get, "", query);
+		}
 	}
 }

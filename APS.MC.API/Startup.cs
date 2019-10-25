@@ -51,8 +51,10 @@ namespace APS.MC.API
 			services.AddTransient<IArduinoCommunicationService, ArduinoCommunicationService>();
 
 			services.AddTransient<SensorCommandHandler, SensorCommandHandler>();
+			services.AddTransient<LightCommandHandler, LightCommandHandler>();
 
 			services.AddTransient<ISensorRepository, SensorRepository>();
+			services.AddTransient<ILightRepository, LightRepository>();
 
 			services.AddTransient<ILoggingService, LoggingService>();
 
