@@ -10,7 +10,7 @@ namespace APS.MC.Shared.APSShared.Commands
 
 		public CommandResult(HttpStatusCode code) : this(code, new List<Notification>()) { }
 
-		public CommandResult(HttpStatusCode code, IReadOnlyCollection<Notification> notifications)
+		public CommandResult(HttpStatusCode code, IEnumerable<Notification> notifications)
 		{
 			Code = code;
 			Notifications = notifications;
@@ -18,6 +18,6 @@ namespace APS.MC.Shared.APSShared.Commands
 
 		public HttpStatusCode Code { get; private set; }
 
-		public IReadOnlyCollection<Notification> Notifications { get; private set; }
+		public IEnumerable<Notification> Notifications { get; private set; }
 	}
 }

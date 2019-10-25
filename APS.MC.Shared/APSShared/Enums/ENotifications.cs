@@ -4,7 +4,9 @@ namespace APS.MC.Shared.APSShared.Enums
 {
 	public enum ENotifications
 	{
-		[Description("Is Not Greater Than")] NotGreaterThan,
-		[Description("Is Not Greater Or Equal Than")] NotGreaterOrEqualsThan
+		[Description("Can't be empty")] Null,
+		[Description("Is too long")] TooLong,
+		[Description("Not a valid format")] InvalidFormat,
+		[Description("Not Found")] NotFound
 	}
 }

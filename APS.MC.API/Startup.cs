@@ -38,6 +38,9 @@ namespace APS.MC.API
 			Settings.ConnectionString = $"{Configuration["connectionString"]}";
 			Settings.DatabaseName = $"{Configuration["databaseName"]}";
 
+			Settings.SerialPortName = $"{Configuration["serialPortName"]}";
+			Settings.SerialPortRate = int.Parse(Configuration["serialPortRate"]);
+
 			Settings.DetailedLog = bool.Parse($"{Configuration["detailedLog"]}");
 
 			services.AddScoped<APSDataContext, APSDataContext>();

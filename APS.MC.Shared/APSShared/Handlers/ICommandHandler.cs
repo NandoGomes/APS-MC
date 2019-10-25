@@ -3,8 +3,8 @@ using APS.MC.Shared.APSShared.Notifications;
 
 namespace APS.MC.Shared.APSShared.Handlers
 {
-	public interface ICommandHandler<T, E> : INotifiable where T : ICommand
+	public interface ICommandHandler<TCommand, TCommandResult> : INotifiable where TCommand : ICommand
 	{
-		E Handle(T command);
+		TCommandResult Handle(TCommand command);
 	}
 }

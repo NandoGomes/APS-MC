@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace APS.MC.Shared.APSShared.Notifications
 		public void AddNotification(string property, ENotifications message) => AddNotification(property, Description(message));
 		public void AddNotification(string property, string message) => AddNotification(new Notification(property, message));
 		public void AddNotification(Notification notification) => Notifications.Add(notification);
-		public void AddNotifications(IEnumerable<Notification> notifications) => Notifications.Concat(notifications);
-		public void AddNotifications(Notifiable item) => AddNotifications(item.Notifications);
+		public void AddNotifications(IEnumerable<Notification> notifications) => Notifications.Concat(notifications ?? Array.Empty<Notification>());
+		public void AddNotifications(Notifiable item) => AddNotifications(item?.Notifications);
 		public void AddNotifications(params Notifiable[] items)
 		{
 			foreach (Notifiable item in items)
