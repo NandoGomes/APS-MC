@@ -6,5 +6,6 @@ namespace APS.MC.Domain.APSContext.Services.ArduinoCommunication
 	{
 		ISensorController Sensors { get; }
 		ILightController Lights { get; }
+		IBuzzerController Buzzers { get; }
 	}
 }

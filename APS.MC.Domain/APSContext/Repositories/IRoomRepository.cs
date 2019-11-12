@@ -5,9 +5,8 @@ using MongoDB.Bson;
 
 namespace APS.MC.Domain.APSContext.Repositories
 {
-	public interface ILightRepository : IRepository<Light>
+	public interface IRoomRepository : IRepository<Room>
 	{
 		IEnumerable<ObjectId> Search(string term);
-		IEnumerable<ObjectId> SearchByRoom(ObjectId roomId);
 	}
 }

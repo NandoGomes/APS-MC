@@ -11,9 +11,9 @@ using MongoDB.Driver;
 
 namespace APS.MC.Infra.APSContext.Repositories
 {
-	public class LightRepository : Repository<Light>, ILightRepository
+	public class BuzzerRepository : Repository<Buzzer>, IBuzzerRepository
 	{
-		public LightRepository(APSDataContext dataContext, ILoggingService loggingService) : base("lights", dataContext, loggingService) { }
+		public BuzzerRepository(APSDataContext dataContext, ILoggingService loggingService) : base("buzzers", dataContext, loggingService) { }
 
 		public IEnumerable<ObjectId> Search(string term)
 		{
@@ -21,7 +21,7 @@ namespace APS.MC.Infra.APSContext.Repositories
 
 			try
 			{
-				result = _collection.Find<Light>(entity => entity.Description.ToLower().Contains(term) || entity.PinPort.Value.ToLower().Contains(term)).ToEnumerable().Select(entity => entity.Id);
+				result = _collection.Find<Buzzer>(entity => entity.Description.ToLower().Contains(term) || entity.PinPort.Value.ToLower().Contains(term)).ToEnumerable().Select(entity => entity.Id);
 			}
 			catch (Exception e)
 			{
@@ -38,7 +38,7 @@ namespace APS.MC.Infra.APSContext.Repositories
 
 			try
 			{
-				result = _collection.Find<Light>(entity => entity.RoomId == roomId).ToEnumerable().Select(entity => entity.Id);
+				result = _collection.Find<Buzzer>(entity => entity.RoomId == roomId).ToEnumerable().Select(entity => entity.Id);
 			}
 			catch (Exception e)
 			{

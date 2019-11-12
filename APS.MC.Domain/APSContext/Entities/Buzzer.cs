@@ -6,11 +6,10 @@ using MongoDB.Bson;
 
 namespace APS.MC.Domain.APSContext.Entities
 {
-	public class Light : Entity
+	public class Buzzer : Entity
 	{
-		protected Light() { }
-
-		public Light(string description, PinPort pinPort, ObjectId roomId)
+		protected Buzzer() { }
+		public Buzzer(string description, PinPort pinPort, ObjectId roomId)
 		{
 			RoomId = roomId;
 
@@ -38,8 +37,6 @@ namespace APS.MC.Domain.APSContext.Entities
 
 			validator.NotNullOrEmpty(Description, nameof(Description), ENotifications.Null)
 					.NotNull(PinPort, nameof(PinPort), ENotifications.Null);
-
-			AddNotifications(PinPort);
 
 			AddNotifications(validator);
 		}

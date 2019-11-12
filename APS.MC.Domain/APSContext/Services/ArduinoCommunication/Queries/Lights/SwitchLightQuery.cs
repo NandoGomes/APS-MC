@@ -2,9 +2,9 @@ using APS.MC.Domain.APSContext.ValueObjects;
 
 namespace APS.MC.Domain.APSContext.Services.ArduinoCommunication.Queries.Lights
 {
-	public class SwichLightQuery
+	public class SwitchLightQuery
 	{
-		public SwichLightQuery(PinPort pinPort, bool state)
+		public SwitchLightQuery(PinPort pinPort, bool state)
 		{
 			PinPort = pinPort;
 			State = state;

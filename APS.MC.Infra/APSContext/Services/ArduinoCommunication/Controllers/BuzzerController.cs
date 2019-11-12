@@ -1,15 +1,15 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Controllers;
-using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Queries.Lights;
+using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Queries.Buzzers;
 
 namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controllers
 {
-	public class LightController : ArduinoController, ILightController
+	public class BuzzerController : ArduinoController, IBuzzerController
 	{
-		public LightController(HttpClient client) : base(client) { }
+		public BuzzerController(HttpClient client) : base(client) { }
 
-		public Task<bool> Switch(SwitchLightQuery query)
+		public Task<bool> Switch(SwitchBuzzerQuery query)
 		{
 			return Task.Factory.StartNew(() => true);
 			// return Send<string>(new HttpMethod("PATCH"), "", query);

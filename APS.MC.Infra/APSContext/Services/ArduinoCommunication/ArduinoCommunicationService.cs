@@ -21,6 +21,7 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService
 
 				Sensors = new SensorController(client);
 				Lights = new LightController(client);
+				Buzzers = new BuzzerController(client);
 			}
 			catch (Exception e)
 			{
@@ -30,5 +31,6 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService
 
 		public ISensorController Sensors { get; private set; }
 		public ILightController Lights { get; private set; }
+		public IBuzzerController Buzzers { get; private set; }
 	}
 }

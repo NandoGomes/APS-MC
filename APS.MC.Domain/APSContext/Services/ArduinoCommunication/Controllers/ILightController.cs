@@ -6,6 +6,6 @@ namespace APS.MC.Domain.APSContext.Services.ArduinoCommunication.Controllers
 {
 	public interface ILightController : INotifiable
 	{
-		Task<bool> Switch(SwichLightQuery query);
+		Task<bool> Switch(SwitchLightQuery query);
 	}
 }

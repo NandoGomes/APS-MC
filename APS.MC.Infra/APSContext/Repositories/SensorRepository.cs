@@ -31,5 +31,22 @@ namespace APS.MC.Infra.APSContext.Repositories
 
 			return result;
 		}
+
+		public IEnumerable<ObjectId> SearchByRoom(ObjectId roomId)
+		{
+			IEnumerable<ObjectId> result = new List<ObjectId>();
+
+			try
+			{
+				result = _collection.Find<Sensor>(entity => entity.RoomId == roomId).ToEnumerable().Select(entity => entity.Id);
+			}
+			catch (Exception e)
+			{
+				_loggingService.Log(ELogType.Neutral, ELogLevel.Error, e, roomId);
+				AddNotification("Error", e.Message);
+			}
+
+			return result;
+		}
 	}
 }

@@ -22,15 +22,18 @@ namespace APS.MC.Domain.APSContext.Handlers
 										ICommandHandler<UpdateSensorCommand, CommandResult>,
 										ICommandHandler<GetSensorCommand, GetSensorCommandResult>,
 										ICommandHandler<SearchSensorCommand, SearchSensorCommandResult>,
+										ICommandHandler<SearchSensorByRoomCommand, SearchSensorByRoomCommandResult>,
 										ICommandHandler<DeleteSensorCommand, CommandResult>,
 										ICommandHandler<ReadSensorCommand, Task<ReadSensorCommandResult>>
 	{
 		private readonly ISensorRepository _sensorRepository;
+		private readonly IRoomRepository _roomRepository;
 		private readonly IArduinoCommunicationService _arduinoCommunicationService;
 
-		public SensorCommandHandler(ISensorRepository sensorRepository, IArduinoCommunicationService arduinoCommunicationService)
+		public SensorCommandHandler(ISensorRepository sensorRepository, IRoomRepository roomRepository, IArduinoCommunicationService arduinoCommunicationService)
 		{
 			_sensorRepository = sensorRepository;
+			_roomRepository = roomRepository;
 			_arduinoCommunicationService = arduinoCommunicationService;
 		}
 
@@ -38,19 +41,38 @@ namespace APS.MC.Domain.APSContext.Handlers
 		{
 			CreateEntityCommandResult result = new CreateEntityCommandResult();
 
-			PinPort pinPort = new PinPort(command.PinPort);
-			Sensor sensor = new Sensor(command.Description, pinPort, command.Type);
+			ObjectId roomId;
+			if (!ObjectId.TryParse(command.RoomId, out roomId))
+				AddNotification(nameof(command.RoomId), ENotifications.InvalidFormat);
 
-			if (sensor.Valid)
+			if (Valid)
 			{
-				_sensorRepository.Create(sensor);
+				PinPort pinPort = new PinPort(command.PinPort);
+				Sensor sensor = new Sensor(command.Description, pinPort, command.Type, roomId);
 
-				if (_sensorRepository.Valid)
-					result = new CreateEntityCommandResult(HttpStatusCode.OK).Build<Sensor, CreateEntityCommandResult>(sensor);
+				if (sensor.Valid)
+				{
+					if (_roomRepository.Get(roomId) == null)
+						AddNotification(nameof(command.RoomId), ENotifications.NotFound);
+
+					if (Valid)
+					{
+						_sensorRepository.Create(sensor);
+
+						if (_sensorRepository.Valid)
+							result = new CreateEntityCommandResult(HttpStatusCode.OK).Build<Sensor, CreateEntityCommandResult>(sensor);
+					}
+
+					else
+						result = new CreateEntityCommandResult(HttpStatusCode.BadRequest, Notifications);
+				}
+
+				else
+					result = new CreateEntityCommandResult(HttpStatusCode.BadRequest, sensor.Notifications);
 			}
 
 			else
-				result = new CreateEntityCommandResult(HttpStatusCode.BadRequest, sensor.Notifications);
+				result = new CreateEntityCommandResult(HttpStatusCode.BadRequest, Notifications);
 
 			return result;
 		}
@@ -131,13 +153,38 @@ namespace APS.MC.Domain.APSContext.Handlers
 		{
 			SearchSensorCommandResult result = new SearchSensorCommandResult();
 
-			IEnumerable<ObjectId> sensors = _sensorRepository.Search(command.Term);
+			List<ObjectId> sensors = _sensorRepository.Search(command.Term).ToList();
 
-			if (sensors.Count() > 0)
+			if (sensors.Count > 0)
 				result = new SearchSensorCommandResult(HttpStatusCode.OK, sensors);
 
 			else if (_sensorRepository.Valid)
 				result = new SearchSensorCommandResult(HttpStatusCode.NoContent);
+
+			return result;
+		}
+
+		public SearchSensorByRoomCommandResult Handle(SearchSensorByRoomCommand command)
+		{
+			SearchSensorByRoomCommandResult result = new SearchSensorByRoomCommandResult();
+
+			ObjectId roomId;
+			if (!ObjectId.TryParse(command.RoomId, out roomId))
+				AddNotification(nameof(command.RoomId), ENotifications.InvalidFormat);
+
+			if (Valid)
+			{
+				List<ObjectId> sensors = _sensorRepository.SearchByRoom(roomId).ToList();
+
+				if (sensors.Count > 0)
+					result = new SearchSensorByRoomCommandResult(HttpStatusCode.OK, sensors);
+
+				else if (_sensorRepository.Valid)
+					result = new SearchSensorByRoomCommandResult(HttpStatusCode.NoContent);
+			}
+
+			else
+				result = new SearchSensorByRoomCommandResult(HttpStatusCode.BadRequest, Notifications);
 
 			return result;
 		}

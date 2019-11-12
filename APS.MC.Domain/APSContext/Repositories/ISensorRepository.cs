@@ -8,5 +8,6 @@ namespace APS.MC.Domain.APSContext.Repositories
 	public interface ISensorRepository : IRepository<Sensor>
 	{
 		IEnumerable<ObjectId> Search(string term);
+		IEnumerable<ObjectId> SearchByRoom(ObjectId roomId);
 	}
 }

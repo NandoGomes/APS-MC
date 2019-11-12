@@ -96,6 +96,26 @@ namespace APS.MC.API.Controllers
 		}
 
 		/// <summary>
+		/// Search All Sensors by Room
+		/// </summary>
+		///
+		/// <param name="room">The room Id to search</param>
+		///
+		/// <response code="200">Returns a list of sensors Ids</response>
+		/// <response code="204">No Sensor found</response>
+		/// <response code="500">Internal Server Error</response>
+		[HttpGet]
+		[Route("V1/Sensors/Rooms/{room}")]
+		public SearchSensorByRoomCommandResult SearchByRoom(string room)
+		{
+			SearchSensorByRoomCommand command = new SearchSensorByRoomCommand();
+
+			command.SetRoomId(room);
+
+			return Execute<SearchSensorByRoomCommand, SearchSensorByRoomCommandResult>(command);
+		}
+
+		/// <summary>
 		/// Delete Sensor
 		/// </summary>
 		///
@@ -114,7 +134,6 @@ namespace APS.MC.API.Controllers
 
 			return Execute<DeleteSensorCommand, CommandResult>(command);
 		}
-
 
 		/// <summary>
 		/// Read Sensor Value

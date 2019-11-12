@@ -52,9 +52,13 @@ namespace APS.MC.API
 
 			services.AddTransient<SensorCommandHandler, SensorCommandHandler>();
 			services.AddTransient<LightCommandHandler, LightCommandHandler>();
+			services.AddTransient<RoomCommandHandler, RoomCommandHandler>();
+			services.AddTransient<BuzzerCommandHandler, BuzzerCommandHandler>();
 
 			services.AddTransient<ISensorRepository, SensorRepository>();
 			services.AddTransient<ILightRepository, LightRepository>();
+			services.AddTransient<IRoomRepository, RoomRepository>();
+			services.AddTransient<IBuzzerRepository, BuzzerRepository>();
 
 			services.AddTransient<ILoggingService, LoggingService>();
 

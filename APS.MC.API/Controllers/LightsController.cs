@@ -96,6 +96,26 @@ namespace APS.MC.API.Controllers
 		}
 
 		/// <summary>
+		/// Search All Lights by Room
+		/// </summary>
+		///
+		/// <param name="room">The room Id to search</param>
+		///
+		/// <response code="200">Returns a list of lights Ids</response>
+		/// <response code="204">No Light found</response>
+		/// <response code="500">Internal Server Error</response>
+		[HttpGet]
+		[Route("V1/Lights/Rooms/{room}")]
+		public SearchLightByRoomCommandResult SearchByRoom(string room)
+		{
+			SearchLightByRoomCommand command = new SearchLightByRoomCommand();
+
+			command.SetRoomId(room);
+
+			return Execute<SearchLightByRoomCommand, SearchLightByRoomCommandResult>(command);
+		}
+
+		/// <summary>
 		/// Delete Light
 		/// </summary>
 		///
