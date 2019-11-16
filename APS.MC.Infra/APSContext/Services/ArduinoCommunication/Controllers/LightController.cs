@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Controllers;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Queries.Lights;
+using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Responses;
 
 namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controllers
 {
@@ -9,10 +10,6 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controlle
 	{
 		public LightController(HttpClient client) : base(client) { }
 
-		public Task<bool> Switch(SwitchLightQuery query)
-		{
-			return Task.Factory.StartNew(() => true);
-			// return Send<string>(new HttpMethod("PATCH"), "", query);
-		}
+		public Task<ARESTDefaultResponse> Switch(SwitchLightQuery query) => Send<ARESTDefaultResponse>(new HttpMethod("GET"), $"/digital/{query.PinPort.Value}/{(query.State ? 1 : 0)}");
 	}
 }

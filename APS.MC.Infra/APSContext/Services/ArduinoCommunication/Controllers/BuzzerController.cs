@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Controllers;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Queries.Buzzers;
+using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Responses;
 
 namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controllers
 {
@@ -9,10 +10,6 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controlle
 	{
 		public BuzzerController(HttpClient client) : base(client) { }
 
-		public Task<bool> Switch(SwitchBuzzerQuery query)
-		{
-			return Task.Factory.StartNew(() => true);
-			//return Send<bool>(new HttpMethod("PATCH"), "", query);
-		}
+		public Task<ARESTDefaultResponse> Switch(SwitchBuzzerQuery query) => Send<ARESTDefaultResponse>(new HttpMethod("GET"), $"/digital/{query.PinPort.Value}/{(query.State ? 1 : 0)}");
 	}
 }
