@@ -12,7 +12,7 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controlle
 		public Task<bool> Switch(SwitchBuzzerQuery query)
 		{
 			return Task.Factory.StartNew(() => true);
-			// return Send<string>(new HttpMethod("PATCH"), "", query);
+			//return Send<bool>(new HttpMethod("PATCH"), "", query);
 		}
 	}
 }
