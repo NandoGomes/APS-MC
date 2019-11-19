@@ -239,7 +239,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 
 				if (Valid)
 				{
-					string value = await _arduinoCommunicationService.Sensors.GetValue(new GetSensorValueQuery(sensor.PinPort, sensor.Type));
+					decimal value = await _arduinoCommunicationService.Sensors.GetValue(new GetSensorValueQuery(sensor.PinPort, sensor.Type));
 
 					if (_arduinoCommunicationService.Sensors.Valid)
 						result = new ReadSensorCommandResult(HttpStatusCode.OK, value);

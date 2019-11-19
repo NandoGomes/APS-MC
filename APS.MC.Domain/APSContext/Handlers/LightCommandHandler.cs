@@ -20,7 +20,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 	public class LightCommandHandler : Notifiable,
 									ICommandHandler<CreateLightCommand, CreateEntityCommandResult>,
 									ICommandHandler<UpdateLightCommand, CommandResult>,
-									ICommandHandler<GetLightCommand, GetLightCommandResult>,
+									ICommandHandler<GetLightCommand, Task<GetLightCommandResult>>,
 									ICommandHandler<SearchLightCommand, SearchLightCommandResult>,
 									ICommandHandler<SearchLightByRoomCommand, SearchLightByRoomCommandResult>,
 									ICommandHandler<DeleteLightCommand, CommandResult>,
@@ -124,7 +124,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 			return result;
 		}
 
-		public GetLightCommandResult Handle(GetLightCommand command)
+		public async Task<GetLightCommandResult> Handle(GetLightCommand command)
 		{
 			GetLightCommandResult result = new GetLightCommandResult();
 
@@ -137,7 +137,15 @@ namespace APS.MC.Domain.APSContext.Handlers
 				Light light = _lightRepository.Get(lightId);
 
 				if (light != null)
+				{
+					if (light.State != await _arduinoCommunicationService.Lights.Read(light.PinPort))
+					{
+						light.Switch();
+						_lightRepository.Update(light);
+					}
+
 					result = new GetLightCommandResult(HttpStatusCode.OK).Build<Light, GetLightCommandResult>(light, command.Fields);
+				}
 
 				else if (_lightRepository.Valid)
 					result = new GetLightCommandResult(HttpStatusCode.NoContent);

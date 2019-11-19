@@ -6,6 +6,7 @@ namespace APS.MC.Domain.APSContext.Services.ArduinoCommunication.Responses
 		public string Name { get; set; }
 		public string Hardware { get; set; }
 		public bool Connected { get; set; }
-		public int Return_Fields { get; set; }
+		public string Message { get; set; }
+		public int Return_Value { get; set; }
 	}
 }

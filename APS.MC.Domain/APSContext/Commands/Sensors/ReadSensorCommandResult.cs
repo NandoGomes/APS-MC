@@ -8,12 +8,12 @@ namespace APS.MC.Domain.APSContext.Commands.Sensors
 	public class ReadSensorCommandResult : CommandResult
 	{
 		public ReadSensorCommandResult() : base() { }
-		public ReadSensorCommandResult(HttpStatusCode code, string value) : base(code)
+		public ReadSensorCommandResult(HttpStatusCode code, decimal value) : base(code)
 		{
 			Value = value;
 		}
 		public ReadSensorCommandResult(HttpStatusCode code, IEnumerable<Notification> notifications) : base(code, notifications) { }
 
-		public string Value { get; private set; }
+		public decimal Value { get; private set; }
 	}
 }

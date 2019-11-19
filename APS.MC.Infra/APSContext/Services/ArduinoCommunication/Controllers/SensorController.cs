@@ -1,7 +1,9 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using APS.MC.Domain.APSContext.Enums;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Controllers;
 using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Queries.Sensors;
+using APS.MC.Domain.APSContext.Services.ArduinoCommunication.Responses;
 
 namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controllers
 {
@@ -9,10 +11,26 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controlle
 	{
 		public SensorController(HttpClient client) : base(client) { }
 
-		public Task<string> GetValue(GetSensorValueQuery query)
+		public async Task<decimal> GetValue(GetSensorValueQuery query)
 		{
-			return Task.Factory.StartNew(() => "66.69");
-			// return Send<string>(HttpMethod.Get, "", query);
+			string url = "/sensors/";
+
+			switch (query.Type)
+			{
+				case ESensorType.Humidity:
+					url += "humidity";
+
+					break;
+
+				case ESensorType.Temperature:
+					url += "temperature";
+
+					break;
+			}
+
+			ARESTDefaultResponse response = await Send<ARESTDefaultResponse>(HttpMethod.Get, $"{url}/{query.PinPort}");
+
+			return response.Return_Value / 100;
 		}
 	}
 }

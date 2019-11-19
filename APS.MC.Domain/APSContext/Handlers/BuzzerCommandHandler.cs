@@ -20,7 +20,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 	public class BuzzerCommandHandler : Notifiable,
 										ICommandHandler<CreateBuzzerCommand, CreateEntityCommandResult>,
 										ICommandHandler<UpdateBuzzerCommand, CommandResult>,
-										ICommandHandler<GetBuzzerCommand, GetBuzzerCommandResult>,
+										ICommandHandler<GetBuzzerCommand, Task<GetBuzzerCommandResult>>,
 										ICommandHandler<SearchBuzzerCommand, SearchBuzzerCommandResult>,
 										ICommandHandler<SearchBuzzerByRoomCommand, SearchBuzzerByRoomCommandResult>,
 										ICommandHandler<DeleteBuzzerCommand, CommandResult>,
@@ -124,7 +124,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 			return result;
 		}
 
-		public GetBuzzerCommandResult Handle(GetBuzzerCommand command)
+		public async Task<GetBuzzerCommandResult> Handle(GetBuzzerCommand command)
 		{
 			GetBuzzerCommandResult result = new GetBuzzerCommandResult();
 
@@ -137,7 +137,15 @@ namespace APS.MC.Domain.APSContext.Handlers
 				Buzzer buzzer = _buzzerRepository.Get(buzzerId);
 
 				if (buzzer != null)
+				{
+					if (buzzer.State != await _arduinoCommunicationService.Buzzers.Read(buzzer.PinPort))
+					{
+						buzzer.Switch();
+						_buzzerRepository.Update(buzzer);
+					}
+
 					result = new GetBuzzerCommandResult(HttpStatusCode.OK).Build<Buzzer, GetBuzzerCommandResult>(buzzer, command.Fields);
+				}
 
 				else if (_buzzerRepository.Valid)
 					result = new GetBuzzerCommandResult(HttpStatusCode.NoContent);
