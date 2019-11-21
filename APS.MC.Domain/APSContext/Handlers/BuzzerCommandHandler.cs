@@ -138,11 +138,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 
 				if (buzzer != null)
 				{
-					if (buzzer.State != await _arduinoCommunicationService.Buzzers.Read(buzzer.PinPort))
-					{
-						buzzer.Switch();
-						_buzzerRepository.Update(buzzer);
-					}
+					buzzer = await UpdateState(buzzer);
 
 					result = new GetBuzzerCommandResult(HttpStatusCode.OK).Build<Buzzer, GetBuzzerCommandResult>(buzzer, command.Fields);
 				}
@@ -247,10 +243,17 @@ namespace APS.MC.Domain.APSContext.Handlers
 
 				if (Valid)
 				{
-					await _arduinoCommunicationService.Buzzers.Switch(new SwitchBuzzerQuery(buzzer.PinPort, !buzzer.State));
+					buzzer = await UpdateState(buzzer);
 
-					if (_arduinoCommunicationService.Buzzers.Valid)
-						result = new CommandResult(HttpStatusCode.OK);
+					buzzer.Switch();
+
+					if (await _arduinoCommunicationService.Buzzers.Switch(new SwitchBuzzerQuery(buzzer.PinPort, !buzzer.State)))
+					{
+						_buzzerRepository.Update(buzzer);
+
+						if (_arduinoCommunicationService.Buzzers.Valid)
+							result = new CommandResult(HttpStatusCode.OK);
+					}
 				}
 
 				else
@@ -261,6 +264,17 @@ namespace APS.MC.Domain.APSContext.Handlers
 				result = new CommandResult(HttpStatusCode.BadRequest, Notifications);
 
 			return result;
+		}
+
+		private async Task<Buzzer> UpdateState(Buzzer buzzer)
+		{
+			if (buzzer.State != await _arduinoCommunicationService.Buzzers.Read(buzzer.PinPort))
+			{
+				buzzer.Switch();
+				_buzzerRepository.Update(buzzer);
+			}
+
+			return buzzer;
 		}
 	}
 }

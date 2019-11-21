@@ -29,7 +29,7 @@ namespace APS.MC.API
 
 		public Startup(IHostingEnvironment hostingEnvironment)
 		{
-			LogManager.LoadConfiguration(System.String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+			LogManager.LoadConfiguration("./nlog.config");
 			_hostingEnvironment = hostingEnvironment;
 		}
 

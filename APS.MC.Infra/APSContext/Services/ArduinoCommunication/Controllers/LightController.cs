@@ -17,12 +17,12 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controlle
 
 			ARESTDefaultResponse response = await Send<ARESTDefaultResponse>(HttpMethod.Get, $"/digital/{query.PinPort.Value}/{value}");
 
-			return response.Message == $"Pin D6 set to {value}";
+			return response.Message == $"Pin D{query.PinPort.Value} set to {value}";
 		}
 
 		public async Task<bool> Read(PinPort pinPort)
 		{
-			ARESTDefaultResponse response = await Send<ARESTDefaultResponse>(HttpMethod.Get, $"/ports/{pinPort.Value}");
+			ARESTDefaultResponse response = await Send<ARESTDefaultResponse>(HttpMethod.Get, $"/ports?params={pinPort.Value}");
 
 			return response.Return_Value != 0;
 		}

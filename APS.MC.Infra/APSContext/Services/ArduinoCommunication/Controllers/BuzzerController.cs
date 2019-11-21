@@ -22,7 +22,7 @@ namespace APS.MC.Infra.APSContext.Services.ArduinoCommunicationService.Controlle
 
 		public async Task<bool> Read(PinPort pinPort)
 		{
-			ARESTDefaultResponse response = await Send<ARESTDefaultResponse>(HttpMethod.Get, $"/ports/{pinPort.Value}");
+			ARESTDefaultResponse response = await Send<ARESTDefaultResponse>(HttpMethod.Get, $"/ports?params={pinPort.Value}");
 
 			return response.Return_Value != 0;
 		}

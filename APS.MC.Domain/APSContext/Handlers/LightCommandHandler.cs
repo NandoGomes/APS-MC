@@ -138,11 +138,7 @@ namespace APS.MC.Domain.APSContext.Handlers
 
 				if (light != null)
 				{
-					if (light.State != await _arduinoCommunicationService.Lights.Read(light.PinPort))
-					{
-						light.Switch();
-						_lightRepository.Update(light);
-					}
+					light = await UpdateState(light);
 
 					result = new GetLightCommandResult(HttpStatusCode.OK).Build<Light, GetLightCommandResult>(light, command.Fields);
 				}
@@ -247,10 +243,17 @@ namespace APS.MC.Domain.APSContext.Handlers
 
 				if (Valid)
 				{
-					await _arduinoCommunicationService.Lights.Switch(new SwitchLightQuery(light.PinPort, !light.State));
+					light = await UpdateState(light);
 
-					if (_arduinoCommunicationService.Lights.Valid)
-						result = new CommandResult(HttpStatusCode.OK);
+					light.Switch();
+
+					if (await _arduinoCommunicationService.Lights.Switch(new SwitchLightQuery(light.PinPort, light.State)))
+					{
+						_lightRepository.Update(light);
+
+						if (_lightRepository.Valid)
+							result = new CommandResult(HttpStatusCode.OK);
+					}
 				}
 
 				else
@@ -261,6 +264,17 @@ namespace APS.MC.Domain.APSContext.Handlers
 				result = new CommandResult(HttpStatusCode.BadRequest, Notifications);
 
 			return result;
+		}
+
+		private async Task<Light> UpdateState(Light light)
+		{
+			if (light.State != await _arduinoCommunicationService.Lights.Read(light.PinPort))
+			{
+				light.Switch();
+				_lightRepository.Update(light);
+			}
+
+			return light;
 		}
 	}
 }
