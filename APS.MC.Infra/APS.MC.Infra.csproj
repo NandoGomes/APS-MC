@@ -3,7 +3,7 @@
     <ProjectReference Include="..\APS.MC.Domain\APS.MC.Domain.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.9.0"/>
+    <PackageReference Include="MongoDB.Driver" Version="2.19.0"/>
     <PackageReference Include="MongoDB.Driver.Core" Version="2.9.0"/>
     <PackageReference Include="MongoDB.Bson" Version="2.9.0"/>
     <PackageReference Include="NLog" Version="4.6.6"/>
